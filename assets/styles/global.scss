@@ -5,7 +5,7 @@
   --color-text-dark:#1A202C;
   --color-heading: #2c313d;
   --color-heading-light: #777e8d;
-  --color-bg: #edf2f7;
+  --color-bg: #e6e7eb;
   --color-raised-bg: #ffffff;
   --color-divider: #eaecef;
   --color-divider-dark: #c8cdd3;
@@ -13,13 +13,13 @@
   --color-text-inverted: var(--color-bg);
   --color-bg-inverted: var(--color-text);
 
-  --color-brand: #5da545;
-  --color-brand-hover: #53923e;
-  --color-brand-active: #4b8138;
-  --color-brand-light: #6bac57;
+  --color-brand: #30b27b;
+  --color-brand-hover: #1e9565;
+  --color-brand-active: #177955;
+  --color-brand-light: #30b27b;
   --color-brand-inverted: #ffffff;
-  --color-brand-2: #5fa33b;
-  --color-brand-3: #c5ddb7;
+  --color-brand-2: #30b27b;
+  --color-brand-3: #30b27b;
   --color-brand-disabled: #e2e8f0;
 
   --color-button-bg: var(--color-bg);
@@ -84,13 +84,13 @@
   --color-text-inverted: var(--color-bg);
   --color-bg-inverted: var(--color-text);
 
-  --color-brand: #5da545;
-  --color-brand-hover: #6bac57;
-  --color-brand-active: #7fc46a;
-  --color-brand-light: #6bac57;
+  --color-brand: #30b27b;
+  --color-brand-hover: #1e9565;
+  --color-brand-active: #177955;
+  --color-brand-light: #30b27b;
   --color-brand-inverted: #ffffff;
-  --color-brand-2: #438121;
-  --color-brand-3: #344d26;
+  --color-brand-2: #30b27b;
+  --color-brand-3: #30b27b;
   --color-brand-disabled: #414146;
 
   --color-button-bg: #343438;
@@ -166,6 +166,7 @@ body {
   --size-navbar-height: 4rem;
 
   --spacing-card-lg: 1.5rem;
+  --spacing-card-bg: 1.0rem;
   --spacing-card-md: 0.75rem;
   --spacing-card-sm: 0.5rem;
 

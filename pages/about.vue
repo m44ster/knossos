@@ -4,7 +4,7 @@
       <h1>About</h1>
       <p>
         Founded in 2020, Modrinth was created to provide modders with an open
-        and intuitive platform to publish their mods on.
+        and intuitive platform to publish their projects on.
       </p>
 
       <p>
@@ -75,7 +75,7 @@ export default {
         hid: 'description',
         name: 'description',
         content:
-          'View information about Modrinth, an open source modding platform here! Modrinth currently supports Minecraft, including the forge and fabric mod loaders.',
+          'View information about Modrinth, an open source modding platform here! Modrinth currently supports Minecraft, including the forge and fabric project loaders.',
       },
       {
         hid: 'apple-mobile-web-app-title',

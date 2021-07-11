@@ -2,7 +2,7 @@
   <article class="project-card">
     <div class="columns">
       <div class="icon">
-        <nuxt-link v-if="isModrinth" :to="'/mod/' + id">
+        <nuxt-link v-if="isModrinth" :to="'/project/' + id">
           <img
             :src="iconUrl || 'https://cdn.modrinth.com/placeholder.svg?inline'"
             :alt="name"
@@ -14,7 +14,7 @@
       <div class="info">
         <div class="top">
           <h2 class="title">
-            <nuxt-link v-if="isModrinth" :to="'/mod/' + id">{{
+            <nuxt-link v-if="isModrinth" :to="'/project/' + id">{{
               name
             }}</nuxt-link>
             <a v-else :href="pageUrl">{{ name }}</a>
@@ -134,7 +134,7 @@ export default {
     },
     name: {
       type: String,
-      default: 'Mod Name',
+      default: 'Project Name',
     },
     author: {
       type: String,
@@ -142,7 +142,7 @@ export default {
     },
     description: {
       type: String,
-      default: 'A mod description',
+      default: 'A project description',
     },
     pageUrl: {
       type: String,

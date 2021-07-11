@@ -20,7 +20,7 @@ export default {
         hid: 'description',
         name: 'description',
         content:
-          'Modrinth is a mod distribution platform. Modrinth is modern, easy to use, and built for modders. Modrinth currently supports Minecraft, including Forge and Fabric mod loaders.',
+          'Modrinth is a project distribution platform. Modrinth is modern, easy to use, and built for modders. Modrinth currently supports Minecraft, including Forge and Fabric project loaders.',
       },
 
       { hid: 'publisher', name: 'publisher', content: 'Guavy LLC' },
@@ -127,7 +127,7 @@ export default {
     Sitemap: 'https://modrinth.com/sitemap.xml',
   },
   sitemap: {
-    exclude: ['/dashboard/**', '/dashboard', '/mod/create'],
+    exclude: ['/dashboard/**', '/dashboard', '/project/create'],
   },
   /*
    ** Axios module configuration

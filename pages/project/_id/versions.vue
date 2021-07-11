@@ -32,8 +32,8 @@
           <td>
             <nuxt-link
               :to="
-                '/mod/' +
-                (mod.slug ? mod.slug : mod.id) +
+                '/project/' +
+                (project.slug ? project.slug : project.id) +
                 '/version/' +
                 encodeURIComponent(version.version_number)
               "
@@ -44,8 +44,8 @@
           <td>
             <nuxt-link
               :to="
-                '/mod/' +
-                (mod.slug ? mod.slug : mod.id) +
+                '/project/' +
+                (project.slug ? project.slug : project.id) +
                 '/version/' +
                 encodeURIComponent(version.version_number)
               "
@@ -94,7 +94,7 @@ export default {
   },
   auth: false,
   props: {
-    mod: {
+    project: {
       type: Object,
       default() {
         return {}

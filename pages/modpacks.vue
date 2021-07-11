@@ -37,7 +37,7 @@
 export default {
   auth: false,
   head: {
-    title: 'Packs - Modrinth',
+    title: 'Modpacks - Modrinth',
     meta: [
       {
         hid: 'apple-mobile-web-app-title',
@@ -46,7 +46,7 @@ export default {
       },
       {
         hid: 'og:title',
-        name: 'og:title',
+        name: 'og:Modpacks',
         content: 'Packs',
       },
       {

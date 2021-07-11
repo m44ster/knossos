@@ -1,6 +1,103 @@
 <template>
   <div class="page-container">
     <div class="page-contents">
+      <section ref="filters" class="filters">
+        <div class="filters-wrapper">
+          <section class="filter-group">
+            <div class="filter-clear-button">
+              <h3>Categories</h3>
+              <div class="columns">
+                <button class="filter-button-done" @click="toggleFiltersMenu">
+                  Close
+                </button>
+                <button class="iconified-button" @click="clearFilters">
+                  <ExitIcon />
+                  Clear filters
+                </button>
+              </div>
+            </div>
+            <SearchFilter
+              v-for="category in $tag.categories"
+              :key="category.name"
+              :active-filters="facets"
+              :display-name="category.name"
+              :facet-name="`categories:${category.name}`"
+              :icon="category.icon"
+              @toggle="toggleFacet"
+            />
+            <h3>Mod Loaders</h3>
+            <SearchFilter
+              v-for="loader in $tag.loaders"
+              :key="loader.name"
+              :active-filters="facets"
+              :display-name="loader.name"
+              :facet-name="`categories:${loader.name}`"
+              :icon="loader.icon"
+              @toggle="toggleFacet"
+            />
+            <h3>Environments</h3>
+            <SearchFilter
+              :active-filters="selectedEnvironments"
+              display-name="Client"
+              facet-name="client"
+              @toggle="toggleEnv"
+            >
+              <ClientSide />
+            </SearchFilter>
+            <SearchFilter
+              :active-filters="selectedEnvironments"
+              display-name="Server"
+              facet-name="server"
+              @toggle="toggleEnv"
+            >
+              <ServerSide />
+            </SearchFilter>
+            <h3>Minecraft Versions</h3>
+            <Checkbox
+              v-model="showSnapshots"
+              label="Include snapshots"
+              style="margin-bottom: 0.5rem"
+              :border="false"
+            />
+          </section>
+          <multiselect
+            v-model="selectedVersions"
+            :options="
+              showSnapshots
+                ? $tag.gameVersions
+                : $tag.gameVersions.filter(
+                    (it) => it.version_type === 'release'
+                  )
+            "
+            track-by="version"
+            label="version"
+            :multiple="true"
+            :searchable="true"
+            :show-no-results="false"
+            :close-on-select="false"
+            :clear-search-on-select="false"
+            :show-labels="false"
+            :selectable="() => selectedVersions.length <= 6"
+            placeholder="Choose versions..."
+            @input="onSearchChange(1)"
+          ></multiselect>
+          <h3>Licenses</h3>
+          <Multiselect
+            v-model="displayLicense"
+            placeholder="Choose licenses..."
+            :loading="$tag.licenses.length === 0"
+            :options="$tag.licenses"
+            track-by="name"
+            label="name"
+            :searchable="false"
+            :close-on-select="true"
+            :show-labels="false"
+            :allow-empty="true"
+            @input="toggleLicense"
+          />
+        </div>
+        <Advertisement type="square" small-screen="destroy" />
+      </section>
       <div class="content">
         <section class="search-nav">
           <div class="iconified-input column-grow-2">
@@ -120,108 +217,7 @@
             @switch-page="onSearchChangeToTop"
           ></pagination>
         </section>
-        <m-footer class="footer" hide-big centered />
       </div>
-      <section ref="filters" class="filters">
-        <div class="filters-wrapper">
-          <section class="filter-group">
-            <div class="filter-clear-button">
-              <h3>Categories</h3>
-              <div class="columns">
-                <button class="filter-button-done" @click="toggleFiltersMenu">
-                  Close
-                </button>
-                <button class="iconified-button" @click="clearFilters">
-                  <ExitIcon />
-                  Clear filters
-                </button>
-              </div>
-            </div>
-            <SearchFilter
-              v-for="category in $tag.categories"
-              :key="category.name"
-              :active-filters="facets"
-              :display-name="category.name"
-              :facet-name="`categories:${category.name}`"
-              :icon="category.icon"
-              @toggle="toggleFacet"
-            />
-            <h3>Mod Loaders</h3>
-            <SearchFilter
-              v-for="loader in $tag.loaders"
-              :key="loader.name"
-              :active-filters="facets"
-              :display-name="loader.name"
-              :facet-name="`categories:${loader.name}`"
-              :icon="loader.icon"
-              @toggle="toggleFacet"
-            />
-            <h3>Environments</h3>
-            <SearchFilter
-              :active-filters="selectedEnvironments"
-              display-name="Client"
-              facet-name="client"
-              @toggle="toggleEnv"
-            >
-              <ClientSide />
-            </SearchFilter>
-            <SearchFilter
-              :active-filters="selectedEnvironments"
-              display-name="Server"
-              facet-name="server"
-              @toggle="toggleEnv"
-            >
-              <ServerSide />
-            </SearchFilter>
-            <h3>Minecraft Versions</h3>
-            <Checkbox
-              v-model="showSnapshots"
-              label="Include snapshots"
-              style="margin-bottom: 0.5rem"
-              :border="false"
-            />
-          </section>
-          <multiselect
-            v-model="selectedVersions"
-            :options="
-              showSnapshots
-                ? $tag.gameVersions
-                : $tag.gameVersions.filter(
-                    (it) => it.version_type === 'release'
-                  )
-            "
-            track-by="version"
-            label="version"
-            :loading="$tag.gameVersions.length === 0"
-            :multiple="true"
-            :searchable="true"
-            :show-no-results="false"
-            :close-on-select="false"
-            :clear-on-select="false"
-            :show-labels="false"
-            :limit="6"
-            :hide-selected="true"
-            placeholder="Choose versions..."
-            @input="onSearchChange(1)"
-          ></multiselect>
-          <h3>Licenses</h3>
-          <Multiselect
-            v-model="displayLicense"
-            placeholder="Choose licenses..."
-            :loading="$tag.licenses.length === 0"
-            :options="$tag.licenses"
-            track-by="name"
-            label="name"
-            :searchable="false"
-            :close-on-select="true"
-            :show-labels="false"
-            :allow-empty="true"
-            @input="toggleLicense"
-          />
-        </div>
-        <Advertisement type="square" small-screen="destroy" />
-        <m-footer class="footer" hide-small />
-      </section>
     </div>
   </div>
 </template>
@@ -233,8 +229,6 @@ import Pagination from '~/components/ui/Pagination'
 import SearchFilter from '~/components/ui/search/SearchFilter'
 import LogoAnimated from '~/components/ui/search/LogoAnimated'
 import Checkbox from '~/components/ui/Checkbox'
-
-import MFooter from '~/components/layout/MFooter'
 
 import ClientSide from '~/assets/images/categories/client.svg?inline'
 import ServerSide from '~/assets/images/categories/server.svg?inline'
@@ -248,7 +242,6 @@ export default {
   auth: false,
   components: {
     Advertisement,
-    MFooter,
     SearchResult,
     Pagination,
     Multiselect,
@@ -259,6 +252,35 @@ export default {
     SearchIcon,
     ExitIcon,
     LogoAnimated,
+  },
+  data() {
+    return {
+      query: '',
+
+      displayLicense: '',
+      selectedLicense: '',
+
+      showSnapshots: false,
+      selectedVersions: [],
+
+      selectedEnvironments: [],
+
+      facets: [],
+      results: null,
+      pages: [],
+      currentPage: 1,
+
+      sortTypes: [
+        { display: 'Relevance', name: 'relevance' },
+        { display: 'Download count', name: 'downloads' },
+        { display: 'Follow count', name: 'follows' },
+        { display: 'Recently created', name: 'newest' },
+        { display: 'Recently updated', name: 'updated' },
+      ],
+      sortType: { display: 'Relevance', name: 'relevance' },
+
+      maxResults: 20,
+    }
   },
   async fetch() {
     if (this.$route.query.q) this.query = this.$route.query.q
@@ -301,34 +323,25 @@ export default {
 
     await this.onSearchChange(this.currentPage)
   },
-  data() {
-    return {
-      query: '',
-
-      displayLicense: '',
-      selectedLicense: '',
-
-      showSnapshots: false,
-      selectedVersions: [],
-
-      selectedEnvironments: [],
-
-      facets: [],
-      results: null,
-      pages: [],
-      currentPage: 1,
-
-      sortTypes: [
-        { display: 'Relevance', name: 'relevance' },
-        { display: 'Download count', name: 'downloads' },
-        { display: 'Follow count', name: 'follows' },
-        { display: 'Recently created', name: 'newest' },
-        { display: 'Recently updated', name: 'updated' },
-      ],
-      sortType: { display: 'Relevance', name: 'relevance' },
-
-      maxResults: 20,
-    }
+  head: {
+    title: 'Mods - Modrinth',
+    meta: [
+      {
+        hid: 'apple-mobile-web-app-title',
+        name: 'apple-mobile-web-app-title',
+        content: 'Mods',
+      },
+      {
+        hid: 'og:title',
+        name: 'og:title',
+        content: 'Mods',
+      },
+      {
+        hid: 'og:url',
+        name: 'og:url',
+        content: `https://modrinth.com/mods`,
+      },
+    ],
   },
   methods: {
     async toggleLicense(license) {
@@ -520,30 +533,9 @@ export default {
         document.body.style.overflow !== 'hidden' ? 'hidden' : 'auto'
     },
   },
-  head: {
-    title: 'Mods - Modrinth',
-    meta: [
-      {
-        hid: 'apple-mobile-web-app-title',
-        name: 'apple-mobile-web-app-title',
-        content: 'Mods',
-      },
-      {
-        hid: 'og:title',
-        name: 'og:title',
-        content: 'Mods',
-      },
-      {
-        hid: 'og:url',
-        name: 'og:url',
-        content: `https://modrinth.com/mods`,
-      },
-    ],
-  },
 }
 </script>
 
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style lang="scss">
 .search-nav {
   align-items: center;
@@ -671,7 +663,6 @@ export default {
     height: unset;
     max-height: unset;
     transition: none;
-    margin-left: var(--spacing-card-lg);
     overflow-y: unset;
     padding-right: 1rem;
     width: 18vw;

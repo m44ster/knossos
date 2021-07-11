@@ -11,7 +11,7 @@
     <ConfirmPopup
       ref="delete_version_popup"
       title="Are you sure you want to delete this version?"
-      description="This will remove this version forever (like really forever), and if some mods depends on this version, it won't work anymore."
+      description="This will remove this version forever (like really forever)."
       :has-to-type="false"
       proceed-label="Delete Version"
       @proceed="deleteVersion()"
@@ -161,7 +161,7 @@ export default {
   },
   auth: false,
   props: {
-    mod: {
+    project: {
       type: Object,
       default() {
         return {}
@@ -302,7 +302,7 @@ export default {
 
       await this.$axios.delete(`version/${this.version.id}`, this.$auth.headers)
 
-      await this.$router.replace(`/mod/${this.mod.id}`)
+      await this.$router.replace(`/project/${this.project.id}`)
       this.$nuxt.$loading.finish()
     },
   },

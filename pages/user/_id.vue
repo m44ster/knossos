@@ -62,35 +62,32 @@
           ethical-ads-small
           ethical-ad-type="image"
         />
-        <m-footer class="footer" hide-small />
       </div>
       <div class="content">
         <Advertisement type="banner" small-screen="destroy" />
-        <div class="mods">
-          <SearchResult
-            v-for="result in mods"
-            :id="result.slug || result.id"
-            :key="result.id"
-            :name="result.title"
-            :description="result.description"
-            :created-at="result.published"
-            :updated-at="result.updated"
-            :downloads="result.downloads.toString()"
-            :icon-url="result.icon_url"
-            :author-url="result.author_url"
-            :categories="result.categories"
+        <div class="projects">
+          <ProjectCard
+            v-for="project in projects"
+            :id="project.slug || project.id"
+            :key="project.id"
+            :name="project.title"
+            :description="project.description"
+            :created-at="project.published"
+            :updated-at="project.updated"
+            :downloads="project.downloads.toString()"
+            :icon-url="project.icon_url"
+            :author-url="project.author_url"
+            :categories="project.categories"
             :is-modrinth="true"
           />
         </div>
-        <m-footer class="footer" hide-big centered />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import SearchResult from '~/components/ui/ProjectCard'
-import MFooter from '~/components/layout/MFooter'
+import ProjectCard from '~/components/ui/ProjectCard'
 
 import ReportIcon from '~/assets/images/utils/report.svg?inline'
 import CalendarIcon from '~/assets/images/utils/calendar.svg?inline'
@@ -100,16 +97,15 @@ import Advertisement from '~/components/ads/Advertisement'
 export default {
   auth: false,
   components: {
+    ProjectCard,
     Advertisement,
-    SearchResult,
     CalendarIcon,
     DownloadIcon,
-    MFooter,
     ReportIcon,
   },
   async asyncData(data) {
     try {
-      const [user, mods] = (
+      const [user, projects] = (
         await Promise.all([
           data.$axios.get(`user/${data.params.id}`),
           data.$axios.get(`user/${data.params.id}/projects`),
@@ -118,7 +114,7 @@ export default {
 
       return {
         user,
-        mods,
+        projects,
       }
     } catch {
       data.error({
@@ -134,8 +130,8 @@ export default {
     sumDownloads() {
       let sum = 0
 
-      for (const mod of this.mods) {
-        sum += mod.downloads
+      for (const projects of this.projects) {
+        sum += projects.downloads
       }
 
       return this.formatNumber(sum)

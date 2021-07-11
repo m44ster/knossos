@@ -2,11 +2,11 @@
   <div class="page-container">
     <div class="page-contents">
       <header class="columns">
-        <h3 class="column-grow-1">Create a mod</h3>
+        <h3 class="column-grow-1">Create a project</h3>
         <button
           title="Save draft"
           class="button column"
-          :disabled="!this.$nuxt.$loading"
+          :disabled="!$nuxt.$loading"
           @click="createDraft"
         >
           Save draft
@@ -14,8 +14,8 @@
         <button
           title="Create"
           class="brand-button column"
-          :disabled="!this.$nuxt.$loading"
-          @click="createMod"
+          :disabled="!$nuxt.$loading"
+          @click="createProject"
         >
           Create
         </button>
@@ -32,7 +32,7 @@
         <h3>Summary</h3>
         <label>
           <span>
-            Give a quick description to your mod. It will appear in the search
+            Give a quick description to your project. It will appear in search
           </span>
           <input
             v-model="description"
@@ -43,7 +43,7 @@
         <h3>Categories</h3>
         <label>
           <span>
-            Select up to 3 categories. They will help to find your mod
+            Select up to 3 categories. They will help to find your project
           </span>
           <multiselect
             id="categories"
@@ -65,7 +65,8 @@
         <h3>Vanity URL (slug)</h3>
         <label>
           <span>
-            Set this to something pretty, so URLs to your mod are more readable
+            Set this to something pretty, so URLs to your project are more
+            readable
           </span>
           <input
             id="name"
@@ -75,7 +76,7 @@
           />
         </label>
       </section>
-      <section class="mod-icon rows">
+      <section class="project-icon rows">
         <h3>Icon</h3>
         <div class="columns row-grow-1">
           <div class="column-grow-1 rows">
@@ -114,9 +115,9 @@
         <h3>Supported environments</h3>
         <div class="columns">
           <span>
-            Let others know if your mod is for clients, servers or universal.
-            For example, IC2 will be required + required, while OptiFine will be
-            required + no functionality
+            Let others know if your project is for clients, servers or
+            universal. For example, IC2 will be required + required, while
+            OptiFine will be required + no functionality
           </span>
           <div class="labeled-control">
             <h3>Client</h3>
@@ -280,7 +281,7 @@
             <h3>Number</h3>
             <label>
               <span>
-                That's how your version will appear in mod lists and in URLs
+                That's how your version will appear in project lists and in URLs
               </span>
               <input
                 v-model="versions[currentVersionIndex].version_number"
@@ -381,7 +382,7 @@
           <i>— this section is optional</i>
         </div>
         <label
-          title="A place for users to report bugs, issues, and concerns about your mod."
+          title="A place for users to report bugs, issues, and concerns about your project."
         >
           <span>Issue tracker</span>
           <input
@@ -399,7 +400,7 @@
           />
         </label>
         <label
-          title="A page containing information, documentation, and help for the mod."
+          title="A page containing information, documentation, and help for the project."
         >
           <span>Wiki page</span>
           <input
@@ -424,9 +425,10 @@
         </div>
         <label>
           <span>
-            It is really important to choose a proper license for your mod. You
-            may choose one from our list or provide a URL to your own license.
-            URL field will be filled automatically for provided licenses
+            It is really important to choose a proper license for your project.
+            You may choose one from our list or provide a URL to your own
+            license. URL field will be filled automatically for provided
+            licenses
           </span>
           <div class="input-group">
             <Multiselect
@@ -563,9 +565,9 @@ export default {
   methods: {
     async createDraft() {
       this.draft = true
-      await this.createMod()
+      await this.createProject()
     },
-    async createMod() {
+    async createProject() {
       this.$nuxt.$loading.start()
 
       for (const version of this.versions) {
@@ -579,12 +581,11 @@ export default {
       formData.append(
         'data',
         JSON.stringify({
-          mod_name: this.name,
+          title: this.name,
           project_type: 'mod',
-          mod_slug: this.slug,
-          mod_namespace: this.namespace,
-          mod_description: this.description,
-          mod_body: this.body,
+          slug: this.slug,
+          description: this.description,
+          body: this.body,
           initial_versions: this.versions,
           team_members: [
             {
@@ -733,24 +734,24 @@ export default {
 .page-contents {
   display: grid;
   grid-template:
-    'header       header      header' auto
-    'advert       advert      advert' auto
-    'essentials   essentials  essentials' auto
-    'mod-icon     mod-icon    mod-icon' auto
-    'game-sides   game-sides  game-sides' auto
-    'description  description description' auto
-    'versions     versions    versions' auto
-    'extra-links  extra-links extra-links' auto
-    'license      license     license' auto
-    'donations    donations   donations' auto
-    'footer       footer      footer' auto
+    'header       header       header' auto
+    'advert       advert       advert' auto
+    'essentials   essentials   essentials' auto
+    'project-icon project-icon project-icon' auto
+    'game-sides   game-sides   game-sides' auto
+    'description  description  description' auto
+    'versions     versions     versions' auto
+    'extra-links  extra-links  extra-links' auto
+    'license      license      license' auto
+    'donations    donations    donations' auto
+    'footer       footer       footer' auto
     / 4fr 1fr 4fr;
 
   @media screen and (min-width: 1024px) {
     grid-template:
       'header       header      header' auto
       'advert       advert      advert' auto
-      'essentials   essentials  mod-icon' auto
+      'essentials   essentials  project-icon' auto
       'game-sides   game-sides  game-sides' auto
       'description  description description' auto
       'versions     versions    versions' auto
@@ -795,8 +796,8 @@ section.essentials {
   grid-area: essentials;
 }
 
-section.mod-icon {
-  grid-area: mod-icon;
+section.project-icon {
+  grid-area: project-icon;
 
   img {
     align-self: flex-start;

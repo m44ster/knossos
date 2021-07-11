@@ -18,8 +18,8 @@
         <p>
           We implemented <span>fast and adaptable</span> search algorithms so
           you don't have to wait, while creating a responsive interface that
-          makes sense. Modrinth is full of elegant mod discovery and a platform
-          which just works.
+          makes sense. Modrinth is full of elegant project discovery and a
+          platform which just works.
         </p>
       </div>
       <div class="right hero-image">
@@ -161,7 +161,7 @@
       <div class="right hero-image less-margin">
         <pre v-highlightjs>
 <code class="javascript example-code">const fetch = require('node-fetch');
-fetch('https://api.modrinth.com/api/v1/mod').then(res => res.json()).then(data => {
+fetch('https://api.modrinth.com/api/v1/search').then(res => res.json()).then(data => {
     console.log(data);
     // hits: [Object {author: "mezz", author_url: …, …}, …]
     // limit: 10

@@ -4,8 +4,8 @@
       <div class="sidebar-l">
         <div v-if="$auth.user != null" class="card page-nav">
           <nuxt-link :to="'/dashboard/projects'" class="tab last">
-            <ModIcon />
-            My mods
+            <ProjectIcon />
+            My projects
           </nuxt-link>
           <nuxt-link :to="'/dashboard/notifications'" class="tab last">
             <NotificationsIcon />
@@ -16,7 +16,7 @@
           </nuxt-link>
           <nuxt-link :to="'/dashboard/follows'" class="tab last">
             <FollowIcon />
-            Followed mods
+            Followed projects
           </nuxt-link>
           <nuxt-link
             v-if="
@@ -47,17 +47,15 @@
             Privacy Settings
           </nuxt-link>
         </div>
-        <m-footer class="footer" hide-small />
       </div>
       <div class="content">
         <NuxtChild />
-        <m-footer class="footer" hide-big centered />
       </div>
     </div>
   </div>
 </template>
 <script>
-import ModIcon from '~/assets/images/sidebar/mod.svg?inline'
+import ProjectIcon from '~/assets/images/sidebar/mod.svg?inline'
 import ModerationIcon from '~/assets/images/sidebar/admin.svg?inline'
 import SettingsIcon from '~/assets/images/sidebar/settings.svg?inline'
 import NotificationsIcon from '~/assets/images/sidebar/notifications.svg?inline'
@@ -65,19 +63,16 @@ import FollowIcon from '~/assets/images/utils/heart.svg?inline'
 import UserIcon from '~/assets/images/utils/user.svg?inline'
 import ShieldIcon from '~/assets/images/utils/shield.svg?inline'
 
-import MFooter from '~/components/layout/MFooter'
-
 export default {
   name: 'DashboardPage',
   components: {
-    ModIcon,
+    ProjectIcon,
     ModerationIcon,
     SettingsIcon,
     NotificationsIcon,
     FollowIcon,
     UserIcon,
     ShieldIcon,
-    MFooter,
   },
   computed: {
     authUrl() {
