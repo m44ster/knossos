@@ -163,7 +163,15 @@
             </div>
           </div>
         </div>
-        <div class="section">
+        <div
+          v-if="
+            project.issues_url ||
+            project.source_url ||
+            project.wiki_url ||
+            project.discord_url
+          "
+          class="section"
+        >
           <h3>External resources</h3>
           <div class="links">
             <a
@@ -198,7 +206,8 @@
               :href="project.discord_url"
               target="_blank"
             >
-              <DiscordIcon />
+              <DiscordIcon v-if="$colorMode.value === 'light'" />
+              <DiscordIconWhite v-else />
             </a>
           </div>
         </div>
@@ -311,6 +320,7 @@ import InfoIcon from '~/assets/images/utils/info.svg?inline'
 import IssuesIcon from '~/assets/images/utils/issues.svg?inline'
 import WikiIcon from '~/assets/images/utils/wiki.svg?inline'
 import DiscordIcon from '~/assets/images/utils/discord.svg?inline'
+import DiscordIconWhite from '~/assets/images/utils/discord-white.svg?inline'
 
 import SettingsIcon from '~/assets/images/utils/settings.svg?inline'
 
@@ -332,6 +342,7 @@ export default {
     InfoIcon,
     WikiIcon,
     DiscordIcon,
+    DiscordIconWhite,
   },
   async asyncData(data) {
     try {
@@ -549,21 +560,59 @@ export default {
 
 .project-main {
   @extend %card-spaced-b;
-  padding: 0 1rem;
   margin-top: 3rem;
+  padding: var(--spacing-card-bg) var(--spacing-card-lg);
 
   .tabs {
     overflow-x: auto;
+    font-size: var(--font-size-md);
+    font-weight: bold;
     padding: 0;
+    margin-bottom: var(--spacing-card-lg);
 
     .tab {
       padding: 0;
-      margin: 0.9rem 0.5rem 0.8rem 0.5rem;
+      margin: 0 1rem;
       &:first-child {
         margin-left: 0;
       }
       &:last-child {
         margin-right: 0;
+      }
+    }
+    a.tab {
+      span {
+        margin-bottom: 3px;
+      }
+
+      &:hover,
+      &:focus,
+      &.nuxt-link-exact-active,
+      &.active-path {
+        span {
+          display: table;
+          margin-left: auto;
+          margin-right: auto;
+          border: none;
+          margin-bottom: 0;
+        }
+
+        span::after {
+          border-bottom: 3px solid var(--color-brand-disabled);
+          content: '';
+          display: block;
+          width: 85%;
+          margin-top: 3px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+      }
+
+      &.nuxt-link-exact-active,
+      &.active-path {
+        span::after {
+          border-bottom: 3px solid var(--color-brand);
+        }
       }
     }
   }

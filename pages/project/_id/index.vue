@@ -25,7 +25,6 @@ export default {
 
 <style lang="scss" scoped>
 .markdown-body {
-  padding: 1rem;
   margin-bottom: var(--spacing-card-md);
   background: var(--color-raised-bg);
   border-radius: var(--size-rounded-card);
