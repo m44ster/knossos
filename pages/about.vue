@@ -75,7 +75,7 @@ export default {
         hid: 'description',
         name: 'description',
         content:
-          'View information about Modrinth, an open source modding platform here! Modrinth currently supports Minecraft, including the forge and fabric project loaders.',
+          'View information about Modrinth, an open source modding platform here! Modrinth currently supports Minecraft, including the forge and fabric mod loaders.',
       },
       {
         hid: 'apple-mobile-web-app-title',

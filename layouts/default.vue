@@ -12,7 +12,6 @@
             />
             <ModrinthLogoWhite v-else aria-label="modrinth" class="text-logo" />
           </NuxtLink>
-          <span class="badge yellow">Beta</span>
         </section>
         <section class="menu-icon">
           <button class="theme-toggle" @click="changeTheme">
@@ -78,12 +77,6 @@
                           <span>Settings</span>
                         </NuxtLink>
                       </li>
-                      <!--<li v-tooltip="'Not implemented yet'" class="hidden">
-                          <NuxtLink :to="userTeamsUrl" disabled>
-                            <UsersIcon />
-                            <span>Teams</span>
-                          </NuxtLink>
-                        </li>-->
                       <li>
                         <button @click="changeTheme">
                           <MoonIcon v-if="$colorMode.value === 'light'" />
@@ -129,12 +122,6 @@
         :max="5"
         :ignore-duplicates="true"
       />
-      <!--<notifications
-        group="ads"
-        position="bottom right"
-        :duration="-1"
-        :ignore-duplicates="true"
-      />-->
       <Nuxt />
     </main>
   </div>

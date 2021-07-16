@@ -13,7 +13,37 @@
             alt="project - icon"
           />
           <h1 class="title">{{ project.title }}</h1>
-          <div class="side-descriptor">
+          <div
+            v-if="
+              project.client_side === 'optional' &&
+              project.server_side === 'optional'
+            "
+            class="side-descriptor"
+          >
+            <InfoIcon />
+            Universal mod
+          </div>
+          <div
+            v-else-if="
+              (project.client_side === 'optional' ||
+                project.client_side === 'required') &&
+              (project.server_side === 'optional' ||
+                project.server_side === 'unsupported')
+            "
+            class="side-descriptor"
+          >
+            <InfoIcon />
+            Client mod
+          </div>
+          <div
+            v-else-if="
+              (project.server_side === 'optional' ||
+                project.server_side === 'required') &&
+              (project.client_side === 'optional' ||
+                project.client_side === 'unsupported')
+            "
+            class="side-descriptor"
+          >
             <InfoIcon />
             Client mod
           </div>
@@ -104,55 +134,72 @@
             </a>
             <div class="info">
               <div class="top">
-                <span
-                  v-if="version.version_type === 'release'"
-                  class="badge green"
+                <nuxt-link
+                  :to="
+                    '/project/' +
+                    (project.slug ? project.slug : project.id) +
+                    '/version/' +
+                    encodeURIComponent(version.version_number)
+                  "
                 >
-                  Release
-                </span>
-                <span
-                  v-if="version.version_type === 'beta'"
-                  class="badge yellow"
-                >
-                  Beta
-                </span>
-                <span v-if="version.version_type === 'alpha'" class="badge red">
-                  Alpha
-                </span>
-                <h4 class="title">
-                  <nuxt-link
-                    :to="
-                      '/project/' +
-                      (project.slug ? project.slug : project.id) +
-                      '/version/' +
-                      encodeURIComponent(version.version_number)
-                    "
-                  >
-                    {{ version.name }}
-                  </nuxt-link>
-                </h4>
+                  {{ version.name }}
+                </nuxt-link>
               </div>
               <div class="bottom">
-                <span class="version-number limit-text-width">
-                  {{ version.version_number }} ·
-                </span>
-                <FabricIcon
-                  v-if="version.loaders.includes('fabric')"
-                  class="loader"
-                />
-                <ForgeIcon
-                  v-if="version.loaders.includes('forge')"
-                  class="loader"
-                />
+                <VersionBadge :type="version.version_type" />
+                <span class="divider" />
                 <span
                   v-if="version.game_versions.length > 0"
-                  class="game-version limit-text-width"
+                  class="game-version"
                 >
-                  ·
+                  {{
+                    version.loaders
+                      .map((x) => x.charAt(0).toUpperCase() + x.slice(1))
+                      .join(',')
+                  }}
                   {{ version.game_versions[version.game_versions.length - 1] }}
                 </span>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="section">
+          <h3>External resources</h3>
+          <div class="links">
+            <a
+              v-if="project.issues_url"
+              :href="project.issues_url"
+              class="title"
+              target="_blank"
+            >
+              <IssuesIcon />
+              <p>Issues</p>
+            </a>
+            <a
+              v-if="project.source_url"
+              :href="project.source_url"
+              class="title"
+              target="_blank"
+            >
+              <CodeIcon />
+              <p>Source</p>
+            </a>
+            <a
+              v-if="project.wiki_url"
+              :href="project.wiki_url"
+              class="title"
+              target="_blank"
+            >
+              <WikiIcon />
+              <p>Wiki</p>
+            </a>
+            <a
+              v-if="project.discord_url"
+              :href="project.discord_url"
+              target="_blank"
+            >
+              <DiscordIcon />
+            </a>
           </div>
         </div>
         <div class="section">
@@ -164,27 +211,42 @@
           >
             <img :src="member.avatar_url" alt="profile-picture" />
             <div class="member-info">
-              <nuxt-link :to="'/user/' + member.user.username">
+              <nuxt-link :to="'/user/' + member.user.username" class="name">
                 <p>{{ member.name }}</p>
               </nuxt-link>
               <p class="role">{{ member.role }}</p>
             </div>
           </div>
         </div>
-        <div
-          v-if="project.donation_urls && project.donation_urls.length > 0"
-          class="section"
-        >
-          <h3>Donation Links</h3>
-          <div
-            v-for="(item, index) in project.donation_urls"
-            :key="index"
-            class="links"
-          >
-            <a :href="item.url" class="link">
-              <ExternalIcon />
-              {{ item.platform }}
-            </a>
+        <div class="section">
+          <h3>Technical information</h3>
+          <div class="infos">
+            <div class="info">
+              <div class="key">License</div>
+              <div class="value uppercase">
+                <a class="text-link" :href="project.license.url">{{
+                  project.license.id
+                }}</a>
+              </div>
+            </div>
+            <div class="info">
+              <div class="key">Client side</div>
+              <div class="value">
+                {{ project.client_side }}
+              </div>
+            </div>
+            <div class="info">
+              <div class="key">Server side</div>
+              <div class="value">
+                {{ project.server_side }}
+              </div>
+            </div>
+            <div class="info">
+              <div class="key">Project ID</div>
+              <div class="value">
+                {{ project.id }}
+              </div>
+            </div>
           </div>
         </div>
         <Advertisement
@@ -246,29 +308,30 @@ import CodeIcon from '~/assets/images/sidebar/mod.svg?inline'
 import ReportIcon from '~/assets/images/utils/report.svg?inline'
 import FollowIcon from '~/assets/images/utils/heart.svg?inline'
 import InfoIcon from '~/assets/images/utils/info.svg?inline'
+import IssuesIcon from '~/assets/images/utils/issues.svg?inline'
+import WikiIcon from '~/assets/images/utils/wiki.svg?inline'
+import DiscordIcon from '~/assets/images/utils/discord.svg?inline'
 
-import ExternalIcon from '~/assets/images/utils/external.svg?inline'
 import SettingsIcon from '~/assets/images/utils/settings.svg?inline'
 
-import ForgeIcon from '~/assets/images/categories/forge.svg?inline'
-import FabricIcon from '~/assets/images/categories/fabric.svg?inline'
 import Advertisement from '~/components/ads/Advertisement'
+import VersionBadge from '~/components/ui/VersionBadge'
 
 export default {
   components: {
+    VersionBadge,
     Advertisement,
-    ExternalIcon,
+    IssuesIcon,
     SettingsIcon,
-    ForgeIcon,
-    FabricIcon,
     DownloadIcon,
     CalendarIcon,
     UpdateIcon,
-    // eslint-disable-next-line vue/no-unused-components
     CodeIcon,
     ReportIcon,
     FollowIcon,
     InfoIcon,
+    WikiIcon,
+    DiscordIcon,
   },
   async asyncData(data) {
     try {
@@ -387,7 +450,6 @@ export default {
   },
 }
 </script>
-
 <style lang="scss" scoped>
 .header {
   align-items: center;
@@ -518,37 +580,13 @@ export default {
 
   .section {
     @extend %card-spaced-b;
-    padding: var(--spacing-card-bg);
+    padding: var(--spacing-card-bg) var(--spacing-card-lg);
   }
 
   h3 {
     font-weight: bold;
     color: var(--color-text);
-    margin-bottom: 0.25rem;
-  }
-
-  .team-member {
-    margin-left: 5px;
-    margin-bottom: 10px;
-
-    img {
-      border-radius: var(--size-rounded-icon);
-      height: 50px;
-      width: 50px;
-    }
-    .member-info {
-      max-width: 150px;
-      overflow: hidden;
-      margin: auto 0 auto 0.5rem;
-      h4 {
-        font-weight: normal;
-        margin: 0;
-      }
-      h3 {
-        margin-top: 0.1rem;
-        margin-bottom: 0;
-      }
-    }
+    margin-bottom: 0.3rem;
   }
 
   .featured-version {
@@ -573,55 +611,93 @@ export default {
       @extend %column;
       font-size: var(--font-size-xs);
       .top {
-        @extend %row;
-        .badge {
-          font-size: var(--font-size-xs);
-          margin-right: var(--spacing-card-sm);
-        }
-        .title {
-          margin: auto 0;
-        }
+        font-weight: bold;
       }
       .bottom {
-        margin-top: 0.25rem;
         @extend %row;
-        .loader {
-          height: 0.75rem;
+        align-items: center;
+        text-overflow: ellipsis;
+        margin-top: 0.25rem;
+
+        .divider {
+          width: 0.25rem;
+          height: 0.25rem;
+          border-radius: 50%;
+          display: inline-block;
+          margin: 0 0.25rem;
+          background-color: var(--color-text);
         }
       }
     }
   }
 
   .links {
-    padding: 0.5rem 1rem;
+    display: flex;
+    flex-wrap: wrap;
 
-    .link {
+    a {
       display: flex;
       align-items: center;
-      padding: 0.25rem 0;
+      padding: 0.25rem 1rem;
+      background-color: var(--color-button-bg);
+      border-radius: 1.5rem;
+      margin: 0 0.25rem 0.5rem 0;
 
       svg {
-        width: 1rem;
-        height: 1rem;
-        margin-right: 0.3rem;
+        height: 1.25rem;
+        width: auto;
       }
+      p {
+        font-size: var(--font-size-sm);
+        margin: 0 0 0 0.25rem;
+      }
+    }
+  }
 
-      &:hover,
-      &:focus {
-        padding-bottom: calc(0.25rem - 3px);
-        border-bottom: 3px solid var(--color-brand-disabled);
-        color: var(--color-text-medium);
+  .team-member {
+    align-items: center;
+
+    img {
+      border-radius: var(--size-rounded-icon);
+      height: 50px;
+      width: 50px;
+    }
+    .member-info {
+      overflow: hidden;
+      margin: auto 0 auto 0.5rem;
+      .name {
+        font-weight: bold;
+      }
+      p {
+        font-size: var(--font-size-sm);
+        margin: 0.2rem 0;
+      }
+    }
+  }
+
+  .infos {
+    .info {
+      display: flex;
+      font-size: var(--font-size-sm);
+      margin: 0.5rem 0;
+
+      .key {
+        font-weight: bold;
+        width: 40%;
+      }
+      .value {
+        width: 50%;
+        text-transform: capitalize;
+      }
+      .uppercase {
+        text-transform: uppercase;
       }
     }
   }
 }
 
 .limit-text-width {
-  display: inline-block;
-  height: 1em;
-  overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 @media screen and (max-width: 550px) {

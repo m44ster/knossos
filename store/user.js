@@ -50,24 +50,25 @@ export const actions = {
       commit('SET_LAST_UPDATED', Date.now())
     }
   },
-  async followProject({ commit, state, rootState }, project) {
-    await this.$axios.post(
-      `project/${project.id}/follow`,
-      {},
-      rootState.auth.headers
-    )
-
+  followProject({ commit, state, rootState }, project) {
     commit('SET_FOLLOWS', state.follows.concat(project))
-  },
-  async unfollowProject({ commit, state, rootState }, project) {
-    await this.$axios.delete(
-      `project/${project.id}/follow`,
-      rootState.auth.headers
-    )
 
+    setTimeout(() => {
+      this.$axios.post(
+        `project/${project.id}/follow`,
+        {},
+        rootState.auth.headers
+      )
+    })
+  },
+  unfollowProject({ commit, state, rootState }, project) {
     commit(
       'SET_FOLLOWS',
       state.follows.filter((x) => x.id !== project.id)
     )
+
+    setTimeout(() => {
+      this.$axios.delete(`project/${project.id}/follow`, rootState.auth.headers)
+    })
   },
 }
